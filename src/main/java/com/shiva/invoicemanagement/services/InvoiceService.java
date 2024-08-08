@@ -5,15 +5,12 @@ import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
 import com.shiva.invoicemanagement.entities.InvoiceItem;
 import com.shiva.invoicemanagement.repo.CustomerRepository;
 import com.shiva.invoicemanagement.repo.InvoiceRepository;
-import com.shiva.invoicemanagement.entities.Customer;
 import com.shiva.invoicemanagement.entities.Invoice;
-import exception.CustomerNotFoundException;
-import exception.InvoiceNotFoundException;
-import lombok.NonNull;
+import com.shiva.invoicemanagement.exception.CustomerNotFoundException;
+import com.shiva.invoicemanagement.exception.InvoiceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

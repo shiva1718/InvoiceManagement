@@ -1,11 +1,9 @@
 package com.shiva.invoicemanagement.controllers;
 
 import com.shiva.invoicemanagement.dto.InvoiceDTO;
-import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
-import com.shiva.invoicemanagement.entities.Invoice;
 import com.shiva.invoicemanagement.services.InvoiceService;
-import exception.CustomerNotFoundException;
-import exception.InvoiceNotFoundException;
+import com.shiva.invoicemanagement.exception.CustomerNotFoundException;
+import com.shiva.invoicemanagement.exception.InvoiceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

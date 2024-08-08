@@ -5,7 +5,7 @@ import com.shiva.invoicemanagement.entities.Invoice;
 import com.shiva.invoicemanagement.entities.Payment;
 import com.shiva.invoicemanagement.repo.InvoiceRepository;
 import com.shiva.invoicemanagement.repo.PaymentRepository;
-import exception.InvoiceNotFoundException;
+import com.shiva.invoicemanagement.exception.InvoiceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
