@@ -1,5 +1,6 @@
 package com.shiva.invoicemanagement.controllers;
 
+import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
 import com.shiva.invoicemanagement.entities.InvoiceItem;
 import com.shiva.invoicemanagement.services.InvoiceItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,13 @@ public class InvoiceItemController {
     @Autowired
     private InvoiceItemService invoiceItemService;
 
-    @PostMapping("/{invoiceId}")
-    public ResponseEntity<InvoiceItem> addItemToInvoice(@PathVariable Long invoiceId, @RequestBody InvoiceItem item) {
-        return ResponseEntity.ok(invoiceItemService.addItemToInvoice(invoiceId, item));
+    @PostMapping("/add/")
+    public ResponseEntity<?> addItemToInvoice(@RequestBody InvoiceItemDTO item) {
+        Long invoiceId = item.getInvoiceId();
+        try {
+            return ResponseEntity.ok(invoiceItemService.addItemToInvoice(invoiceId, item));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invoice ID not found");
+        }
     }
 }
