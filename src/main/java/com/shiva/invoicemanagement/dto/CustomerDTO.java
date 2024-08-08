@@ -1,5 +1,8 @@
 package com.shiva.invoicemanagement.dto;
 
+import com.shiva.invoicemanagement.entities.Customer;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDTO {
@@ -8,7 +11,7 @@ public class CustomerDTO {
     private String email;
     private String address;
     private String phone;
-    private List<InvoiceDTO> invoices;
+    private List<InvoiceDTO> invoices = new ArrayList<>();
 
     public CustomerDTO() {
     }
@@ -29,6 +32,15 @@ public class CustomerDTO {
         this.invoices = invoices;
     }
 
+    public CustomerDTO(Customer customer) {
+        this.id = customer.getId();
+        this.name = customer.getName();
+        this.email = customer.getEmail();
+        this.address = customer.getAddress();
+        this.phone = customer.getPhone();
+        customer.getInvoices().forEach(invoice -> invoices.add(new InvoiceDTO(invoice)));
+    }
+
     public Long getId() {
         return id;
     }
@@ -47,5 +59,9 @@ public class CustomerDTO {
 
     public String getPhone() {
         return phone;
+    }
+
+    public List<InvoiceDTO> getInvoices() {
+        return invoices;
     }
 }

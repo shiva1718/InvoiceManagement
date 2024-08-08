@@ -1,5 +1,6 @@
 package com.shiva.invoicemanagement.services;
 
+import com.shiva.invoicemanagement.dto.CustomerDTO;
 import com.shiva.invoicemanagement.repo.CustomerRepository;
 import com.shiva.invoicemanagement.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +24,15 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public List<Customer> listAllCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> listAllCustomers() {
+//        return customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll();
+        List<CustomerDTO> customerDtos = new ArrayList<>(customers.size());
+        for (Customer customer : customers) {
+            CustomerDTO customerDTO = new CustomerDTO(customer);
+            customerDtos.add(customerDTO);
+        }
+        return customerDtos;
     }
 
     public Optional<Customer> getCustomerById(Long id) {

@@ -23,7 +23,7 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<?> listAllCustomers() {
-        List<Customer> customers = customerService.listAllCustomers();
+        List<CustomerDTO> customers = customerService.listAllCustomers();
         if (customers.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No customer found");
         }
@@ -56,8 +56,8 @@ public class CustomerController {
 
     @GetMapping("/{id}/invoices")
     public ResponseEntity<?> getInvoicesByCustomer(@PathVariable Long id) {
-        List<Customer> customers = customerService.listAllCustomers();
-        for (Customer customer : customers) {
+        List<CustomerDTO> customers = customerService.listAllCustomers();
+        for (CustomerDTO customer : customers) {
             if (customer.getId().equals(id)) {
                 return ResponseEntity.ok(customer.getInvoices());
             }
