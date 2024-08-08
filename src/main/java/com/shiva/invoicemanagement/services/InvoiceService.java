@@ -69,4 +69,13 @@ public class InvoiceService {
             return new InvoiceDTO(invoice.get());
         }
     }
+
+    public void deleteInvoiceById(Long id) {
+        Optional<Invoice> invoice = invoiceRepository.findById(id);
+        if (invoice.isEmpty()) {
+            throw new InvoiceNotFoundException("Invoice not found");
+        } else {
+            invoiceRepository.deleteById(id);
+        }
+    }
 }

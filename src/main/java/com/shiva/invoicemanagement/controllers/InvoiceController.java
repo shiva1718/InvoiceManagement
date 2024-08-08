@@ -50,4 +50,14 @@ public class InvoiceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice ID not found");
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteInvoiceById(@PathVariable Long id) {
+        try {
+            invoiceService.deleteInvoiceById(id);
+            return ResponseEntity.ok("Invoice deleted successfully");
+        } catch (InvoiceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invoice ID not found");
+        }
+    }
 }

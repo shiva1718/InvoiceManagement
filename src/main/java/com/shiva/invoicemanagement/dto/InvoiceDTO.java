@@ -2,18 +2,28 @@ package com.shiva.invoicemanagement.dto;
 
 import com.shiva.invoicemanagement.entities.Invoice;
 import com.shiva.invoicemanagement.entities.InvoiceItem;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class InvoiceDTO {
+    @Setter
     private Long id;
+
     private String date;
+
+    @Setter
     private double totalAmount;
+
+    @Setter
     private Long customerId;
-    private List<InvoiceItemDTO> items = new ArrayList<>();
+    private List<InvoiceItemDTO> items;
 
     public InvoiceDTO() {
+        items = new ArrayList<>();
     }
 
     public InvoiceDTO(Long id, String date, double totalAmount, Long customerId) {
@@ -21,6 +31,7 @@ public class InvoiceDTO {
         this.date = date;
         this.totalAmount = totalAmount;
         this.customerId = customerId;
+        items = new ArrayList<>();
     }
 
     public InvoiceDTO(Invoice invoice) {
@@ -28,37 +39,8 @@ public class InvoiceDTO {
         this.date = invoice.getDate().toString();
         this.totalAmount = invoice.getTotalAmount();
         this.customerId = invoice.getCustomer().getId();
+        items = new ArrayList<>();
         invoice.getItems().forEach(item -> items.add(new InvoiceItemDTO(item)));
     }
 
-    public Long getId() {
-        return id;
-    }
-    public String getDate() {
-        return date;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public List<InvoiceItemDTO> getItems() {
-        return items;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 }
