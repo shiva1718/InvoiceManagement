@@ -39,6 +39,7 @@ public class CustomerDTO {
         this.address = customer.getAddress();
         this.phone = customer.getPhone();
         customer.getInvoices().forEach(invoice -> invoices.add(new InvoiceDTO(invoice)));
+
     }
 
     public Long getId() {

@@ -17,8 +17,6 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
-    private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
 
     public Customer addCustomer(Customer customer) {
         return customerRepository.save(customer);

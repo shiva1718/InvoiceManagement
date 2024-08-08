@@ -26,15 +26,19 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<InvoiceItem> items;
 
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
+    private List<Payment> payments;
+
     public Invoice(InvoiceDTO invoice, Customer customer) {
         this.date = Date.valueOf(invoice.getDate());
         this.customer = customer;
         items = new ArrayList<>();
-
+        payments = new ArrayList<>();
     }
 
     public Invoice() {
         items = new ArrayList<>();
+        payments = new ArrayList<>();
     }
 
     public void addItem(InvoiceItem invoiceItem) {
@@ -42,4 +46,7 @@ public class Invoice {
         totalAmount += invoiceItem.getTotalAmount();
     }
 
+    public void makePayment(Payment newPayment) {
+        payments.add(newPayment);
+    }
 }
