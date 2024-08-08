@@ -1,6 +1,7 @@
 package com.shiva.invoicemanagement.services;
 
 import com.shiva.invoicemanagement.dto.CustomerDTO;
+import com.shiva.invoicemanagement.exception.CustomerNotFoundException;
 import com.shiva.invoicemanagement.repo.CustomerRepository;
 import com.shiva.invoicemanagement.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,24 @@ public class CustomerService {
             return true;
         }
         return false;
+    }
+
+    public double getCustomerBalance(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) {
+            throw new CustomerNotFoundException("Customer ID not found");
+        }
+        return customer.get().getBalance();
+    }
+
+    public String updateCustomerBalance(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) {
+            throw new CustomerNotFoundException("Customer ID not found");
+        }
+//        customer.get().setBalance(0);
+        customer.get().updateBalance();
+        customerRepository.save(customer.get());
+        return "Customer balance updated successfully";
     }
 }

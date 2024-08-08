@@ -15,6 +15,7 @@ public class Customer {
     private String email;
     private String address;
     private String phone;
+    private double balance;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Invoice> invoices;
@@ -30,5 +31,20 @@ public class Customer {
         if (customer.getAddress() != null) {
             this.address = customer.getAddress();
         }
+    }
+
+    public void addBalance(double toAdd) {
+        this.balance += toAdd;
+    }
+
+    public void subtractBalance(double toSubtract) {
+        this.balance -= toSubtract;
+    }
+
+    public double updateBalance() {
+        double totalAmount = invoices.stream().mapToDouble(Invoice::getTotalAmount).sum();
+        double totalPaid = invoices.stream().mapToDouble(Invoice::getTotalPaid).sum();
+        balance = totalAmount - totalPaid;
+        return balance;
     }
 }

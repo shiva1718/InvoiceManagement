@@ -49,4 +49,8 @@ public class Invoice {
     public void makePayment(Payment newPayment) {
         payments.add(newPayment);
     }
+
+    public double getTotalPaid() {
+        return payments.stream().mapToDouble(Payment::getAmountPaid).sum();
+    }
 }

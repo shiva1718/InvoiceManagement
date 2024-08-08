@@ -64,4 +64,15 @@ public class CustomerController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
     }
+
+    @GetMapping("balance/{id}")
+    public ResponseEntity<?> getCustomerBalance(@PathVariable Long id) {
+        return ResponseEntity.ok("Customer balance = " + customerService.getCustomerBalance(id));
+    }
+
+    @PutMapping("balance/update/{id}")
+    public ResponseEntity<?> updateCustomerBalance(@PathVariable Long id) {
+        return ResponseEntity.ok("Customer balance updated to " + customerService.updateCustomerBalance(id));
+    }
+
 }
