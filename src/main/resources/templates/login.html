@@ -68,11 +68,43 @@
             margin-top: 20px;
         }
     </style>
+    <script>
+        function setCookie(name, value, days) {
+            let expires = '';
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = '; expires=' + date.toUTCString();
+            }
+            document.cookie = name + '=' + (value || '')  + expires + '; path=/';
+        }
+        function sendLoginRequest() {
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/auth/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.href = '/home';
+                        let token = JSON.parse(xhr.responseText)['token'];
+                        setCookie('token', token, 1);
+                        setCookie('username', username, 1);
+                    } else {
+                        alert('Invalid username or password!');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({username: username, password: password}));
+        }
+    </script>
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form th:action="@{/api/auth/login}" method="post">
+<!--        <form th:action="@{/api/auth/login}" method="post">-->
+        <div>
             <div>
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -82,13 +114,13 @@
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <div>
-                <button type="submit">Login</button>
+                <button onclick="sendLoginRequest()">Login</button>
             </div>
             <div class="links-container">
                 <a href="#" class="forgot-password">Forgot Password?</a>
                 <a href="./signup" class="sign-up">Don't have an account? Sign Up</a>
             </div>
-        </form>
+        </div>
     </div>
 </body>
 </html>

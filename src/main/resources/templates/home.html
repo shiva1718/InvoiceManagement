@@ -28,7 +28,7 @@
             margin-bottom: 20px;
             color: #333;
         }
-        .container a {
+        .container a, .container div {
             display: block;
             margin: 10px 0;
             padding: 10px 0;
@@ -38,8 +38,9 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        .container a:hover {
+        .container a:hover, .container div:hover {
             background-color: #0056b3;
+            cursor: pointer;
         }
         .logout {
             margin-top: 20px;
@@ -49,16 +50,40 @@
             background-color: #c82333;
         }
     </style>
+    <script>
+        let token = ''
+        let username = ''
+        function getCookie(name) {
+            let nameEQ = name + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        function deleteCookie(name) {
+            document.cookie = name + '=; Max-Age=-99999999;';
+        }
+
+        document.querySelector('.logout').addEventListener('click', function () {
+            deleteCookie('token');
+        });
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        // });
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Welcome, <span th:text="${username}">User</span>!</h1>
-        <a th:href="@{/customers}" role="button">Manage Customers</a>
-        <a th:href="@{/invoices}" role="button">View Invoices</a>
-        <a th:href="@{/invoices/new}" role="button">Create New Invoice</a>
-        <a th:href="@{/reports}" role="button">View Reports</a>
-        <a th:href="@{/profile}" role="button">Profile</a>
-        <a th:href="@{/logout}" class="logout" role="button">Logout</a>
+        <div th:href="@{/customers}" role="button" onclick="">Manage Customers</div>
+        <div th:href="@{/invoices}" role="button">View Invoices</div>
+        <div th:href="@{/invoices/new}" role="button">Create New Invoice</div>
+        <div th:href="@{/reports}" role="button">View Reports</div>
+        <div th:href="@{/profile}" role="button">Profile</div>
+        <div th:href="@{/logout}" class="logout" role="button">Logout</div>
     </div>
 </body>
 </html>

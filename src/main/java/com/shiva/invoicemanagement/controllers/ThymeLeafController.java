@@ -16,4 +16,9 @@ public class ThymeLeafController {
     public String signup(Model model) {
         return "signup";
     }
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        return "home";
+    }
 }

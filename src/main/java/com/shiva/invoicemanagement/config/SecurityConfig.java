@@ -39,17 +39,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .exceptionHandling(exceptionHandling ->
-                exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
-            .sessionManagement(sessionManagement ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests
-                    .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/signup").permitAll()
-                    .anyRequest().authenticated());
+                .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/login", "/signup", "/home").permitAll()
+//                                .requestMatchers("/signup").permitAll()
+//                                .requestMatchers("/home").permitAll()
+                                .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

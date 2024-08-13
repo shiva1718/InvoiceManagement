@@ -3,6 +3,7 @@ package com.shiva.invoicemanagement.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Role cannot be empty")
+    @NotNull(message = "Role cannot be empty")
     private Role role;
 
     public User(String username, String encode, String email, Role role) {

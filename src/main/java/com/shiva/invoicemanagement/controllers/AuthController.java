@@ -9,6 +9,7 @@ import com.shiva.invoicemanagement.entities.User;
 import com.shiva.invoicemanagement.repo.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,10 +54,10 @@ public class AuthController {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body("Username is already taken!");
         }
-        System.out.println(signUpRequest);
         if (signUpRequest.getRole() == null) {
-            signUpRequest.setRole(Role.CUSTOMER);
+            signUpRequest.setRole(Role.ADMIN);
         }
+        System.out.println(signUpRequest);
         User user = new User(signUpRequest.getUsername(),
                              passwordEncoder.encode(signUpRequest.getPassword()),
                                 signUpRequest.getEmail(),
@@ -64,6 +65,9 @@ public class AuthController {
 
         userRepository.save(user);
 
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.status(HttpStatus.OK)
+//                .header("Location", "/login")
+                .body("User registered successfully!");
     }
+
 }

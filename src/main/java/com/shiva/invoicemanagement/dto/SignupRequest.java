@@ -15,8 +15,8 @@ public class SignupRequest {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-    @NotEmpty(message = "Confirm Password cannot be empty")
-    private String confirmPassword;
+//    @NotEmpty(message = "Confirm Password cannot be empty")
+//    private String confirmPassword;
 
     @Email
     @NotEmpty(message = "Email cannot be empty")
