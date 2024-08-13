@@ -1,6 +1,7 @@
 package com.shiva.invoicemanagement.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.Getter;
@@ -23,13 +24,18 @@ public class User {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
+    @Email
+    @NotEmpty(message = "Email cannot be empty")
+    private String email;
+
     @Enumerated(EnumType.STRING)
     @NotEmpty(message = "Role cannot be empty")
     private Role role;
 
-    public User(String username, String encode, Role role) {
+    public User(String username, String encode, String email, Role role) {
         this.username = username;
         this.password = encode;
+        this.email = email;
         this.role = role;
     }
 

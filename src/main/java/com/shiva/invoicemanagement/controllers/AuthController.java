@@ -4,6 +4,7 @@ import com.shiva.invoicemanagement.config.JwtUtils;
 import com.shiva.invoicemanagement.dto.JwtResponse;
 import com.shiva.invoicemanagement.dto.LoginRequest;
 import com.shiva.invoicemanagement.dto.SignupRequest;
+import com.shiva.invoicemanagement.entities.Role;
 import com.shiva.invoicemanagement.entities.User;
 import com.shiva.invoicemanagement.repo.UserRepository;
 
@@ -53,8 +54,12 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Username is already taken!");
         }
         System.out.println(signUpRequest);
+        if (signUpRequest.getRole() == null) {
+            signUpRequest.setRole(Role.CUSTOMER);
+        }
         User user = new User(signUpRequest.getUsername(),
                              passwordEncoder.encode(signUpRequest.getPassword()),
+                                signUpRequest.getEmail(),
                              signUpRequest.getRole());
 
         userRepository.save(user);
