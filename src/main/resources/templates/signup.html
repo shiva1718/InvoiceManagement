@@ -66,23 +66,15 @@
         }
     </style>
     <script>
-        // check if password and confirm password match
-        document.addEventListener('DOMContentLoaded', function() {
-            let password = document.getElementById('password');
-            let confirmPassword = document.getElementById('confirmPassword');
-            let signUpButton = document.querySelector('.signup-container button');
-
-            signUpButton.addEventListener('click', function(event) {
-                if (password.value !== confirmPassword.value) {
-                    alert('Passwords do not match!');
-                    event.preventDefault();
-                }
-            });
-        });
         function sendData() {
             let username = document.getElementById('username').value;
             let email = document.getElementById('email').value;
             let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/api/auth/register', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
