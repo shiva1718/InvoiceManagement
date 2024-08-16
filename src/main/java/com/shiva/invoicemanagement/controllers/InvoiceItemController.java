@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping("/api/v1/items")
 public class InvoiceItemController {
     @Autowired
     private InvoiceItemService invoiceItemService;
