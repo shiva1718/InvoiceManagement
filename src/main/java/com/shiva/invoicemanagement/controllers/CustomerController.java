@@ -16,7 +16,8 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("/add")
+    @GetMapping
+//    @PostMapping("/add")
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
         return ResponseEntity.ok(customerService.addCustomer(customer));
     }
@@ -70,7 +71,8 @@ public class CustomerController {
         return ResponseEntity.ok("Customer balance = " + customerService.getCustomerBalance(id));
     }
 
-    @PutMapping("balance/update/{id}")
+//    @PutMapping("balance/update/{id}")
+    @PutMapping("balance/{id}")
     public ResponseEntity<?> updateCustomerBalance(@PathVariable Long id) {
         return ResponseEntity.ok("Customer balance updated to " + customerService.updateCustomerBalance(id));
     }
