@@ -13,7 +13,11 @@ public class Customer {
     private Long id;
     private String name;
     private String email;
-    private String address;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
     private String phone;
     private double balance;
 
