@@ -16,7 +16,7 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/add/")
+    @PostMapping
     public ResponseEntity<?> addPayment(@RequestBody PaymentDTO payment) {
         if (payment == null) {
             return ResponseEntity.badRequest().body("Body not found");

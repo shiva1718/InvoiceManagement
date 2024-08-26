@@ -13,7 +13,7 @@ public class InvoiceItemController {
     @Autowired
     private InvoiceItemService invoiceItemService;
 
-    @PostMapping("/add/")
+    @PostMapping
     public ResponseEntity<?> addItemToInvoice(@RequestBody InvoiceItemDTO item) {
         Long invoiceId = item.getInvoiceId();
         try {
