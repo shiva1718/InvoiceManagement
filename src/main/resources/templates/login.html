@@ -82,7 +82,7 @@
             let username = document.getElementById('username').value;
             let password = document.getElementById('password').value;
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/auth/login', true);
+            xhr.open('POST', '/api/v1/auth/login', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
