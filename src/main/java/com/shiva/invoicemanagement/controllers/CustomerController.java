@@ -2,12 +2,14 @@ package com.shiva.invoicemanagement.controllers;
 
 import com.shiva.invoicemanagement.dto.CustomerDTO;
 import com.shiva.invoicemanagement.entities.Customer;
+import com.shiva.invoicemanagement.repo.UserRepository;
 import com.shiva.invoicemanagement.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -15,9 +17,10 @@ import java.util.List;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping
-//    @PostMapping("/add")
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
         return ResponseEntity.ok(customerService.addCustomer(customer));
     }
@@ -32,7 +35,10 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id, Principal principal) {
+        String name = principal.getName();
+        System.out.println("Principal name = " + name);
+        userRepository.findByUsername(name).ifPresent(user -> System.out.println("User role = " + user.getRole()));
         return customerService.getCustomerById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));

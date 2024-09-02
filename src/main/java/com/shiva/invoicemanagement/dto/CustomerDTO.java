@@ -20,22 +20,6 @@ public class CustomerDTO {
     public CustomerDTO() {
     }
 
-    public CustomerDTO(String name, String email, Address address, String phone) {
-        this.name = name;
-        this.email = email;
-        this.address = address;
-        this.phone = phone;
-    }
-
-    public CustomerDTO(Long id, String name, String email, Address address, String phone, List<InvoiceDTO> invoices) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.address = address;
-        this.phone = phone;
-        this.invoices = invoices;
-    }
-
     public CustomerDTO(Customer customer) {
         this.id = customer.getId();
         this.name = customer.getName();
