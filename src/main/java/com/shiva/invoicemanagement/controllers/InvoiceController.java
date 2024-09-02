@@ -17,13 +17,11 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
-//    @PostMapping("/add")
     @PostMapping
     public ResponseEntity<?> addInvoice(@RequestBody InvoiceDTO invoice) {
         if (invoice == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-//        Long customerId = invoice.getCustomerId();
         try {
             return ResponseEntity.ok(invoiceService.addInvoice(invoice));
         } catch (CustomerNotFoundException e) {
