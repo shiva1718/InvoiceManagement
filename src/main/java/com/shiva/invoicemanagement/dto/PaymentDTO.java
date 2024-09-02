@@ -16,14 +16,6 @@ public class PaymentDTO {
     public PaymentDTO() {
     }
 
-    public PaymentDTO(Long id, String date, double amountPaid, Long invoiceId, String paymentType) {
-        this.id = id;
-        this.date = date;
-        this.amountPaid = amountPaid;
-        this.invoiceId = invoiceId;
-        this.paymentType = paymentType;
-    }
-
     public PaymentDTO(Payment payment) {
         this.id = payment.getId();
         this.date = payment.getDate().toString();

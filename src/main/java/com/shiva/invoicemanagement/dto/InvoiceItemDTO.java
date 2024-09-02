@@ -13,15 +13,6 @@ public class InvoiceItemDTO {
     public InvoiceItemDTO() {
     }
 
-    public InvoiceItemDTO(Long id, String name, double price, int quantity, double totalAmount, Long invoiceId) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.totalAmount = totalAmount;
-        this.invoiceId = invoiceId;
-    }
-
     public InvoiceItemDTO(InvoiceItem item) {
         this.id = item.getId();
         this.name = item.getItemName();

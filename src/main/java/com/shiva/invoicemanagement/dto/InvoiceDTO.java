@@ -1,7 +1,6 @@
 package com.shiva.invoicemanagement.dto;
 
 import com.shiva.invoicemanagement.entities.Invoice;
-import com.shiva.invoicemanagement.entities.InvoiceItem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,15 +23,6 @@ public class InvoiceDTO {
     private List<PaymentDTO> payments;
 
     public InvoiceDTO() {
-        items = new ArrayList<>();
-        payments = new ArrayList<>();
-    }
-
-    public InvoiceDTO(Long id, String date, double totalAmount, Long customerId) {
-        this.id = id;
-        this.date = date;
-        this.totalAmount = totalAmount;
-        this.customerId = customerId;
         items = new ArrayList<>();
         payments = new ArrayList<>();
     }
