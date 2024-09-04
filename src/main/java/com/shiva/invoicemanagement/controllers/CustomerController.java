@@ -27,10 +27,11 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer) {
         System.out.println("received customer add req");
+        System.out.println(customer);
         return ResponseEntity.ok(customerService.addCustomer(customer));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<?> listAllCustomers() {
         List<CustomerDTO> customers = customerService.listAllCustomers();
@@ -41,18 +42,16 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<?> getCustomerById(@PathVariable Long id, Principal principal) {
         String name = principal.getName();
         System.out.println("Principal name = " + name);
         userRepository.findByUsername(name).ifPresent(user -> System.out.println("User role = " + user.getRole()));
-        return customerService.getCustomerById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-        Customer updatedCustomer = customerService.updateCustomer(id, customer);
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+        CustomerDTO updatedCustomer = customerService.updateCustomer(id, customer);
         if (updatedCustomer == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -80,11 +79,4 @@ public class CustomerController {
     public ResponseEntity<?> getCustomerBalance(@PathVariable Long id) {
         return ResponseEntity.ok("Customer balance = " + customerService.getCustomerBalance(id));
     }
-
-
-    @PutMapping("balance/{id}")
-    public ResponseEntity<?> updateCustomerBalance(@PathVariable Long id) {
-        return ResponseEntity.ok("Customer balance updated to " + customerService.updateCustomerBalance(id));
-    }
-
 }

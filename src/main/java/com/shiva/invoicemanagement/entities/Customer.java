@@ -3,11 +3,13 @@ package com.shiva.invoicemanagement.entities;
 import com.shiva.invoicemanagement.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Data
+@ToString
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +29,13 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(CustomerDTO customer) {
-        this.name = customer.getName();
-        this.email = customer.getEmail();
-        this.address = customer.getAddress();
-        this.phone = customer.getPhone();
-        customer.getInvoices().forEach(invoiceDTO -> invoices.add(new Invoice(invoiceDTO, this)));
-    }
+//    public Customer(CustomerDTO customer) {
+//        this.name = customer.getName();
+//        this.email = customer.getEmail();
+//        this.address = customer.getAddress();
+//        this.phone = customer.getPhone();
+//        customer.getInvoices().forEach(invoiceDTO -> invoices.add(new Invoice(invoiceDTO, this)));
+//    }
 
     public void update(Customer customer) {
         // update only fields which are not null

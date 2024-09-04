@@ -28,25 +28,32 @@ public class CustomerService {
     public List<CustomerDTO> listAllCustomers() {
 //        return customerRepository.findAll();
         List<Customer> customers = customerRepository.findAll();
+        System.out.println("found customers" + customers);
         List<CustomerDTO> customerDtos = new ArrayList<>(customers.size());
         for (Customer customer : customers) {
             CustomerDTO customerDTO = new CustomerDTO(customer);
             customerDtos.add(customerDTO);
         }
+        System.out.println("returned customerDTOs");
         return customerDtos;
     }
 
-    public Optional<Customer> getCustomerById(Long id) {
-        return customerRepository.findById(id);
+    public CustomerDTO getCustomerById(Long id) {
+        Customer customer = customerRepository.findById(id).orElse(null);
+        System.out.println("found customer = " + customer);
+        if (customer == null) {
+            return null;
+        }
+        return new CustomerDTO(customer);
     }
 
-    public Customer updateCustomer(Long id, Customer customer) {
+    public CustomerDTO updateCustomer(Long id, Customer customer) {
         Optional<Customer> byId = customerRepository.findById(id);
         if (byId.isEmpty()) {
             return null;
         }
         byId.get().update(customer);
-        return customerRepository.save(byId.get());
+        return new CustomerDTO(customerRepository.save(byId.get()));
 //        customer.setId(id);
 //        return customerRepository.save(customer);
     }
