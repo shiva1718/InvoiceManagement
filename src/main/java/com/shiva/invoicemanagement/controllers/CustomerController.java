@@ -28,9 +28,10 @@ public class CustomerController {
     @GetMapping
     public ResponseEntity<?> listAllCustomers() {
         List<CustomerDTO> customers = customerService.listAllCustomers();
-        if (customers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No customer found");
-        }
+//        if (customers.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No customer found");
+//        }
+        System.out.println("Called once!");
         return ResponseEntity.ok(customers);
     }
 
@@ -77,7 +78,7 @@ public class CustomerController {
         return ResponseEntity.ok("Customer balance = " + customerService.getCustomerBalance(id));
     }
 
-//    @PutMapping("balance/update/{id}")
+
     @PutMapping("balance/{id}")
     public ResponseEntity<?> updateCustomerBalance(@PathVariable Long id) {
         return ResponseEntity.ok("Customer balance updated to " + customerService.updateCustomerBalance(id));

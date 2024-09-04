@@ -71,15 +71,29 @@
             deleteCookie('token');
         });
 
+
         // document.addEventListener('DOMContentLoaded', function () {
         // });
+
+        function getCustomerInvoice() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/v1/customers/', true);
+            token = getCookie('token');
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
     </script>
 </head>
 <body>
     <div class="container">
         <h1>Welcome, <span th:text="${username}">User</span>!</h1>
-        <div th:href="@{/customers}" role="button" onclick="">Manage Customers</div>
-        <div th:href="@{/invoices}" role="button">View Invoices</div>
+        <div th:href="@{/customers}" role="button">Manage Customers</div>
+        <div th:href="@{/invoices}" role="button" onclick="getCustomerInvoice();">View Invoices</div>
         <div th:href="@{/invoices/new}" role="button">Create New Invoice</div>
         <div th:href="@{/reports}" role="button">View Reports</div>
         <div th:href="@{/profile}" role="button">Profile</div>
