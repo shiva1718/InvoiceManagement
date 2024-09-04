@@ -1,5 +1,6 @@
 package com.shiva.invoicemanagement.entities;
 
+import com.shiva.invoicemanagement.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,17 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Invoice> invoices;
+
+    public Customer() {
+    }
+
+    public Customer(CustomerDTO customer) {
+        this.name = customer.getName();
+        this.email = customer.getEmail();
+        this.address = customer.getAddress();
+        this.phone = customer.getPhone();
+        customer.getInvoices().forEach(invoiceDTO -> invoices.add(new Invoice(invoiceDTO, this)));
+    }
 
     public void update(Customer customer) {
         // update only fields which are not null

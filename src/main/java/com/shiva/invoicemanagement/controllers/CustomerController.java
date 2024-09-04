@@ -1,12 +1,15 @@
 package com.shiva.invoicemanagement.controllers;
 
 import com.shiva.invoicemanagement.dto.CustomerDTO;
+import com.shiva.invoicemanagement.dto.InvoiceDTO;
 import com.shiva.invoicemanagement.entities.Customer;
 import com.shiva.invoicemanagement.repo.UserRepository;
 import com.shiva.invoicemanagement.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -20,18 +23,20 @@ public class CustomerController {
     @Autowired
     private UserRepository userRepository;
 
+
     @PostMapping
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<?> addCustomer(@RequestBody Customer customer) {
+        System.out.println("received customer add req");
         return ResponseEntity.ok(customerService.addCustomer(customer));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<?> listAllCustomers() {
         List<CustomerDTO> customers = customerService.listAllCustomers();
 //        if (customers.isEmpty()) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No customer found");
 //        }
-        System.out.println("Called once!");
         return ResponseEntity.ok(customers);
     }
 
@@ -64,11 +69,9 @@ public class CustomerController {
 
     @GetMapping("/{id}/invoices")
     public ResponseEntity<?> getInvoicesByCustomer(@PathVariable Long id) {
-        List<CustomerDTO> customers = customerService.listAllCustomers();
-        for (CustomerDTO customer : customers) {
-            if (customer.getId().equals(id)) {
-                return ResponseEntity.ok(customer.getInvoices());
-            }
+        List<InvoiceDTO> invoices = customerService.listCustomerInvoices(id);
+        if (invoices != null) {
+            return ResponseEntity.ok(invoices);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
     }

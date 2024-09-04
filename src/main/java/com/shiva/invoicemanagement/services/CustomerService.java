@@ -1,10 +1,12 @@
 package com.shiva.invoicemanagement.services;
 
 import com.shiva.invoicemanagement.dto.CustomerDTO;
+import com.shiva.invoicemanagement.dto.InvoiceDTO;
 import com.shiva.invoicemanagement.exception.CustomerNotFoundException;
 import com.shiva.invoicemanagement.repo.CustomerRepository;
 import com.shiva.invoicemanagement.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -75,5 +77,15 @@ public class CustomerService {
         customer.get().updateBalance();
         customerRepository.save(customer.get());
         return "Customer balance updated successfully";
+    }
+
+    public List<InvoiceDTO> listCustomerInvoices(long id) {
+        List<CustomerDTO> customers = listAllCustomers();
+        for (CustomerDTO customer : customers) {
+            if (customer.getId().equals(id)) {
+                return customer.getInvoices();
+            }
+        }
+        return null;
     }
 }

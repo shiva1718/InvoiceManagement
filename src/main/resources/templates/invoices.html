@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoices</title>
+</head>
+<body>
+<h1>Invoice List</h1>
+<ul>
+  <li th:each="invoice : ${invoices}">
+    <span th:text="${invoice.id}"></span> -
+    <span th:text="${invoice.total}"></span> -
+    <span th:text="${invoice.date}"></span>
+  </li>
+</ul>
+</body>
+</html>
