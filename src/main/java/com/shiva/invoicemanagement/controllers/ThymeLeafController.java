@@ -37,14 +37,14 @@ public class ThymeLeafController {
 
     @GetMapping("/customers")
     public String customers(Model model) {
-        List<CustomerDTO> customers = customerService.listAllCustomers();
-//        System.out.println("Invoices = " + invoices);
-        if (customers == null) {
-            return "redirect:/api/v1/customers/";
-        } else {
-            model.addAttribute("customers", customers);
-            return "customers";
-        }
+        return "customers";
+//        List<CustomerDTO> customers = customerService.listAllCustomers();
+//        if (customers == null) {
+//            return "redirect:/api/v1/customers/";
+//        } else {
+//            model.addAttribute("customers", customers);
+//            return "customers";
+//        }
     }
 
     @GetMapping("/invoices")
