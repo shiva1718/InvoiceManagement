@@ -9,9 +9,13 @@
 <h1>Customer List</h1>
 <ul>
   <li th:each="customer : ${customers}">
-    <span th:text="${customer.name}"></span> -
-    <span th:text="${customer.email}"></span>
+    Name: <span th:text="${customer.name}"></span><br>
+    Email: <span th:text="${customer.email}"></span><br>
+    Address: <span th:text="${customer.address}"></span><br>
+    Phone: <span th:text="${customer.phone}"></span><br>
+    Balance: <span th:text="${customer.balance}"></span><br>
   </li>
+  <br/>
 </ul>
 </body>
 </html>

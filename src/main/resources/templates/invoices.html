@@ -9,9 +9,9 @@
 <h1>Invoice List</h1>
 <ul>
   <li th:each="invoice : ${invoices}">
-    <span th:text="${invoice.id}"></span> -
-    <span th:text="${invoice.total}"></span> -
-    <span th:text="${invoice.date}"></span>
+    ID: <span th:text="${invoice.id}"></span><br>
+    Total: <span th:text="${invoice.totalAmount}"></span> <br>
+    Date: <span th:text="${invoice.date}"></span><br>
   </li>
 </ul>
 </body>

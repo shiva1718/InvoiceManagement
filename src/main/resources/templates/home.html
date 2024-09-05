@@ -92,12 +92,12 @@
 <body>
     <div class="container">
         <h1>Welcome, <span th:text="${username}">User</span>!</h1>
-        <div th:href="@{/customers}" role="button">Manage Customers</div>
-        <div th:href="@{/invoices}" role="button" onclick="getCustomerInvoice();">View Invoices</div>
-        <div th:href="@{/invoices/new}" role="button">Create New Invoice</div>
-        <div th:href="@{/reports}" role="button">View Reports</div>
-        <div th:href="@{/profile}" role="button">Profile</div>
-        <div th:href="@{/logout}" class="logout" role="button">Logout</div>
+        <a th:href="@{/customers}" role="button">Manage Customers</a>
+        <a th:href="@{/invoices}" role="button">View Invoices</a>
+        <a th:href="@{/invoices/new}" role="button">Create New Invoice</a>
+        <a th:href="@{/reports}" role="button">View Reports</a>
+        <a th:href="@{/profile}" role="button">Profile</a>
+        <a th:href="@{/logout}" class="logout" role="button">Logout</a>
     </div>
 </body>
 </html>
