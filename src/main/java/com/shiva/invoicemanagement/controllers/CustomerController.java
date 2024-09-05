@@ -16,7 +16,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/customers/")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -31,7 +31,6 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.addCustomer(customer));
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<?> listAllCustomers() {
         List<CustomerDTO> customers = customerService.listAllCustomers();

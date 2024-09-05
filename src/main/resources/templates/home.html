@@ -63,13 +63,16 @@
             }
             return null;
         }
+
         function deleteCookie(name) {
-            document.cookie = name + '=; Max-Age=-99999999;';
+            console.log('Deleting cookie: ' + name);
+            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
         }
 
-        document.querySelector('.logout').addEventListener('click', function () {
+        function logout() {
             deleteCookie('token');
-        });
+            window.location.href = '/login';
+        }
 
 
         // document.addEventListener('DOMContentLoaded', function () {
@@ -90,14 +93,14 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, <span th:text="${username}">User</span>!</h1>
-        <a th:href="@{/customers}" role="button">Manage Customers</a>
-        <a th:href="@{/invoices}" role="button">View Invoices</a>
-        <a th:href="@{/invoices/new}" role="button">Create New Invoice</a>
-        <a th:href="@{/reports}" role="button">View Reports</a>
-        <a th:href="@{/profile}" role="button">Profile</a>
-        <a th:href="@{/logout}" class="logout" role="button">Logout</a>
-    </div>
+<div class="container">
+    <h1>Welcome, <span th:text="${username}">User</span>!</h1>
+    <a th:href="@{/customers}" role="button">Manage Customers</a>
+    <a th:href="@{/invoices}" role="button">View Invoices</a>
+    <a th:href="@{/invoices/new}" role="button">Create New Invoice</a>
+    <a th:href="@{/reports}" role="button">View Reports</a>
+    <a th:href="@{/profile}" role="button">Profile</a>
+    <div class="logout" role="button" onclick="logout();">Logout</div>
+</div>
 </body>
 </html>

@@ -34,7 +34,7 @@
         };
         console.log("sending req");
 
-        fetch("http://localhost:8080/api/v1/customers/", requestOptions)
+        fetch("http://localhost:8080/api/v1/customers", requestOptions)
             .then(response => {
                 if (response.status === 401) {
                     alert('Unauthorized. Please log in.');

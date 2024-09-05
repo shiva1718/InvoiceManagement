@@ -4,15 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invoices</title>
+  <script>
+    let token = ''
+    let username = ''
+    function getCookie(name) {
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+    window.onload = function () {
+        token = getCookie('token')
+        username = getCookie('username')
+        let JSESSIONID = getCookie('JSESSIONID')
+        if (!token || !username) {
+            window.location.href = '/login'
+        }
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+        console.log("sending req");
+
+        fetch("http://localhost:8080/api/v1/invoices", requestOptions)
+            .then(response => {
+                if (response.status === 401) {
+                    alert('Unauthorized. Please log in.');
+                    window.location.href = '/login';  // Redirect to login if unauthorized
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                let invoices = data;
+                for (let i = 0; i < invoices.length; i++) {
+                    document.getElementById("invoices-list").innerHTML += `
+                <li>
+                    ID: ${invoices[i].id}<br>
+                    Total: ${invoices[i].totalAmount}<br>
+                    Date: ${invoices[i].date}<br>
+                </li>
+                <br/>
+            `
+                }
+            }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+  </script>
 </head>
 <body>
 <h1>Invoice List</h1>
-<ul>
-  <li th:each="invoice : ${invoices}">
-    ID: <span th:text="${invoice.id}"></span><br>
-    Total: <span th:text="${invoice.totalAmount}"></span> <br>
-    Date: <span th:text="${invoice.date}"></span><br>
-  </li>
+<ul id="invoices-list">
+  <!--    <li th:each="invoice : ${invoices}">-->
+  <!--        ID: <span th:text="${invoice.id}"></span><br>-->
+  <!--        Total: <span th:text="${invoice.totalAmount}"></span> <br>-->
+  <!--        Date: <span th:text="${invoice.date}"></span><br>-->
+  <!--    </li>-->
 </ul>
 </body>
 </html>
