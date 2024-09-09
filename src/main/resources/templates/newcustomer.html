@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Customer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .button:hover {
+      background-color: #45a049;
+    }
+    .message {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Add New Customer</h1>
+
+  <form id="newCustomerForm">
+    <label for="name">Customer Name</label>
+    <input type="text" id="name" placeholder="Enter customer's name" required>
+
+    <label for="email">Customer Email</label>
+    <input type="email" id="email" placeholder="Enter customer's email" required>
+
+    <label for="phone">Customer Phone</label>
+    <input type="text" id="phone" placeholder="Enter customer's phone" required>
+
+    <h2>Address</h2>
+    <label for="street">Street</label>
+    <input type="text" id="street" placeholder="Enter street" required>
+
+    <label for="city">City</label>
+    <input type="text" id="city" placeholder="Enter city" required>
+
+    <label for="state">State</label>
+    <input type="text" id="state" placeholder="Enter state" required>
+
+    <label for="postalCode">Postal Code</label>
+    <input type="text" id="postalCode" placeholder="Enter postal code" required>
+
+    <button type="submit" class="button">Submit</button>
+  </form>
+
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+  function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  document.getElementById('newCustomerForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    const token = getCookie('token')
+    const username = getCookie('username')
+    let JSESSIONID = getCookie('JSESSIONID')
+
+    if (!token || !username) {
+      window.location.href = '/login'
+    }
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const street = document.getElementById('street').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+    const postalCode = document.getElementById('postalCode').value;
+    const messageDiv = document.getElementById('message');
+
+    // Validate inputs
+    if (!name || !email || !phone || !street || !city || !state || !postalCode) {
+      messageDiv.textContent = 'Please fill out all fields!';
+      messageDiv.className = 'error';
+      return;
+    }
+
+    // Create a customer object to send in the request
+    const customerData = {
+      name: name,
+      email: email,
+      phone: phone,
+      address: {
+        street: street,
+        city: city,
+        state: state,
+        pincode: postalCode
+      }
+    };
+
+    try {
+      // Send a POST request to the server with customer data
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + token);
+      myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
+      myHeaders.append("Content-Type", "application/json");
+      // myHeaders.append("Accept", "application/json");
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(customerData),
+        redirect: "follow"
+      };
+      console.log("sending req");
+
+      fetch("http://localhost:8080/api/v1/customers", requestOptions)
+              .then(async response => {
+                if (response.status === 401) {
+                  alert('Unauthorized. Please log in.');
+                  window.location.href = '/login';  // Redirect to login if unauthorized
+                }
+                if (response.ok) {
+                  // If the request was successful, show a success message
+                  messageDiv.textContent = 'Customer added successfully!';
+                  messageDiv.className = 'success';
+                  document.getElementById('newCustomerForm').reset();  // Reset the form
+                } else {
+                  // If there was an error, show an error message
+                  const errorResponse = await response.json();
+                  messageDiv.textContent = 'Error: ' + errorResponse.message;
+                  messageDiv.className = 'error';
+                }
+                return response.json();
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("loadingMessage").style.display = 'none';
+                document.getElementById("errorMessage").style.display = 'block';
+              });
+    } catch (error) {
+      // Show a generic error message if the request fails
+      messageDiv.textContent = 'Failed to add customer. Please try again.';
+      messageDiv.className = 'error';
+      console.error('Error:', error);
+    }
+  });
+</script>
+
+</body>
+</html>

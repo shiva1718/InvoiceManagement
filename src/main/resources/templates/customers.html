@@ -62,6 +62,7 @@
     <th>Name</th>
     <th>Email</th>
     <th>Phone</th>
+    <th>Balance</th>
   </tr>
   </thead>
   <tbody>
@@ -71,97 +72,98 @@
 
 <button class="button" onclick="fetchCustomers()">Refresh List</button>
 
-<button class="button" onclick="showNewCustomerForm()">Add New Customer</button>
+<a class="button" href="/customers/new">Add New Customer</a>
 
 <script>
 
   let token = null;
   let username = null;
-function getCookie(name) {
-  let nameEQ = name + "=";
-  let ca = document.cookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-
-// Function to fetch and display customers
-async function fetchCustomers() {
-  const loadingMessage = document.getElementById('loadingMessage');
-  const errorMessage = document.getElementById('errorMessage');
-  const tableBody = document.querySelector('#customerTable tbody');
-
-  loadingMessage.style.display = 'block';  // Show loading message
-  errorMessage.style.display = 'none';    // Hide error message
-  tableBody.innerHTML = '';               // Clear the table body
-
-  token = getCookie('token')
-  username = getCookie('username')
-
-  try {
-    // Send a request to fetch customer data from server
-    let JSESSIONID = getCookie('JSESSIONID')
-    if (!token || !username) {
-      window.location.href = '/login'
+  function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer " + token);
-    myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
-    const requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow"
-    };
-    console.log("sending req");
-    fetch("http://localhost:8080/api/v1/customers", requestOptions)
-            .then(response => {
-              if (response.status === 401) {
-                alert('Unauthorized. Please log in.');
-                window.location.href = '/login';  // Redirect to login if unauthorized
-              }
-              return response.json();
-            })
-            .then(data => {
-              console.log(data);
-              let customers = data;
-              displayCustomers(customers);
-              loadingMessage.style.display = 'none';
-            }).catch(error => {
-      console.error('Error:', error);
-      loadingMessage.style.display = 'none';
-      errorMessage.style.display = 'block';
-      });
-  } catch (error) {
-    console.error('Error:', error);
-    loadingMessage.style.display = 'none';    // Hide loading message
-    errorMessage.style.display = 'block';     // Show error message
+    return null;
   }
-}
 
-// Function to display customers in the table
-function displayCustomers(customers) {
-  const tableBody = document.querySelector('#customerTable tbody');
+  // Function to fetch and display customers
+  async function fetchCustomers() {
+    const loadingMessage = document.getElementById('loadingMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const tableBody = document.querySelector('#customerTable tbody');
 
-  // Loop through the customer list and create table rows
-  customers.forEach(customer => {
-    const row = document.createElement('tr');
+    loadingMessage.style.display = 'block';  // Show loading message
+    errorMessage.style.display = 'none';    // Hide error message
+    tableBody.innerHTML = '';               // Clear the table body
 
-    row.innerHTML = `
+    token = getCookie('token')
+    username = getCookie('username')
+
+    try {
+      // Send a request to fetch customer data from server
+      let JSESSIONID = getCookie('JSESSIONID')
+      if (!token || !username) {
+        window.location.href = '/login'
+      }
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + token);
+      myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      };
+      console.log("sending req");
+      fetch("http://localhost:8080/api/v1/customers", requestOptions)
+              .then(response => {
+                if (response.status === 401) {
+                  alert('Unauthorized. Please log in.');
+                  window.location.href = '/login';  // Redirect to login if unauthorized
+                }
+                return response.json();
+              })
+              .then(data => {
+                console.log(data);
+                let customers = data;
+                displayCustomers(customers);
+                loadingMessage.style.display = 'none';
+              }).catch(error => {
+        console.error('Error:', error);
+        loadingMessage.style.display = 'none';
+        errorMessage.style.display = 'block';
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      loadingMessage.style.display = 'none';    // Hide loading message
+      errorMessage.style.display = 'block';     // Show error message
+    }
+  }
+
+  // Function to display customers in the table
+  function displayCustomers(customers) {
+    const tableBody = document.querySelector('#customerTable tbody');
+
+    // Loop through the customer list and create table rows
+    customers.forEach(customer => {
+      const row = document.createElement('tr');
+
+      row.innerHTML = `
                   <td>${customer.id}</td>
                   <td>${customer.name}</td>
                   <td>${customer.email}</td>
                   <td>${customer.phone}</td>
+                  <td>${customer.balance}</td>
               `;
 
-    tableBody.appendChild(row);
-  });
-}
+      tableBody.appendChild(row);
+    });
+  }
 
-// Fetch customers when the page loads
-window.onload = fetchCustomers;
+  // Fetch customers when the page loads
+  window.onload = fetchCustomers;
 </script>
 
 </body>
