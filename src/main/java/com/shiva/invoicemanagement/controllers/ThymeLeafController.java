@@ -63,4 +63,9 @@ public class ThymeLeafController {
     public String newCustomer(Model model) {
         return "newcustomer";
     }
+
+    @GetMapping("/invoices/{id}")
+    public String viewInvoice(Model model) {
+        return "viewinvoice2";
+    }
 }
