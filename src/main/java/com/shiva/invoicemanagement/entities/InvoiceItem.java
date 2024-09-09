@@ -15,7 +15,7 @@ public class InvoiceItem {
     private int quantity;
     private double totalAmount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 

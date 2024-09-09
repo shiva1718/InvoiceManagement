@@ -25,7 +25,7 @@ public class ThymeLeafController {
         return "signup";
     }
 
-    @GetMapping("/home")
+    @GetMapping(value = {"/home", "/"})
     public String home(Model model) {
         return "home";
     }
@@ -52,5 +52,10 @@ public class ThymeLeafController {
 //            model.addAttribute("invoices", invoices);
 //            return "invoices";
 //        }
+    }
+
+    @GetMapping("/invoices/new")
+    public String newInvoice(Model model) {
+        return "newinvoice";
     }
 }

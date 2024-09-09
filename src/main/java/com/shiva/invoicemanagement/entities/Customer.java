@@ -1,15 +1,18 @@
 package com.shiva.invoicemanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shiva.invoicemanagement.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,7 @@ public class Customer {
     private double balance;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Invoice> invoices;
 
     public Customer() {
@@ -64,4 +68,6 @@ public class Customer {
         balance = totalAmount - totalPaid;
         return balance;
     }
+
+
 }

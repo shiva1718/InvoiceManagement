@@ -1,9 +1,15 @@
 package com.shiva.invoicemanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.shiva.invoicemanagement.dto.InvoiceDTO;
 import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +17,8 @@ import java.util.List;
 import java.sql.Date;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +26,7 @@ public class Invoice {
     private Date date;
     private double totalAmount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 

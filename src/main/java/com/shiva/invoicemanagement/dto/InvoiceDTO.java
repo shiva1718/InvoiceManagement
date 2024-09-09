@@ -19,6 +19,8 @@ public class InvoiceDTO {
 
     @Setter
     private Long customerId;
+    private String customerName;
+
     private List<InvoiceItemDTO> items;
     private List<PaymentDTO> payments;
 
@@ -36,6 +38,7 @@ public class InvoiceDTO {
         invoice.getItems().forEach(item -> items.add(new InvoiceItemDTO(item)));
         payments = new ArrayList<>();
         invoice.getPayments().forEach(payment -> payments.add(new PaymentDTO(payment)));
+        this.customerName = invoice.getCustomer().getName();
     }
 
 }

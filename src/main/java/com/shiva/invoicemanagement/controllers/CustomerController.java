@@ -32,9 +32,9 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<?> listAllCustomers() {
-        List<CustomerDTO> customers = customerService.listAllCustomers();
+    public ResponseEntity<List<CustomerDTO>> listAllCustomers() {
         System.out.println("received customer list req");
+        List<CustomerDTO> customers = customerService.listAllCustomers();
 //        if (customers.isEmpty()) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No customer found");
 //        }

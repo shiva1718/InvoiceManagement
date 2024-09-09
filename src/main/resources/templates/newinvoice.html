@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create New Invoice</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script>
+    // Function to dynamically add more invoice items
+    function addItemRow() {
+        const itemsTable = document.getElementById("itemsTable");
+        const newRow = itemsTable.insertRow(-1);
+
+        newRow.innerHTML = `
+            <td><input type="text" class="form-control" name="itemName" placeholder="Item Name" required></td>
+            <td><input type="number" class="form-control" name="quantity" placeholder="Quantity" min="1" required></td>
+            <td><input type="number" class="form-control" name="price" placeholder="Price" min="0.01" step="0.01" required></td>
+            <td><button type="button" class="btn btn-danger" onclick="removeItemRow(this)">Remove</button></td>
+        `;
+    }
+
+    // Function to remove invoice item row
+    function removeItemRow(button) {
+        const row = button.parentElement.parentElement;
+        row.parentElement.removeChild(row);
+    }
+  </script>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Create New Invoice</h2>
+
+  <form action="#" th:action="@{/invoices}" method="post">
+    <!-- Customer Information -->
+    <div class="mb-3">
+      <label for="customerName" class="form-label">Customer ID</label>
+      <input type="text" class="form-control" id="customerName" name="customerName" th:value="${customerName}" required>
+    </div>
+
+<!--    <div class="mb-3">-->
+<!--      <label for="customerEmail" class="form-label">Customer Email</label>-->
+<!--      <input type="email" class="form-control" id="customerEmail" name="customerEmail" th:value="${customerEmail}" required>-->
+<!--    </div>-->
+
+    <!-- Invoice Date -->
+    <div class="mb-3">
+      <label for="invoiceDate" class="form-label">Invoice Date</label>
+      <input type="date" class="form-control" id="invoiceDate" name="invoiceDate" th:value="${invoiceDate}" required>
+    </div>
+
+    <!-- Invoice Items Table -->
+    <h5>Invoice Items</h5>
+    <table class="table" id="itemsTable">
+      <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><input type="text" class="form-control" name="itemName" placeholder="Item Name" required></td>
+        <td><input type="number" class="form-control" name="quantity" placeholder="Quantity" min="1" required></td>
+        <td><input type="number" class="form-control" name="price" placeholder="Price" min="0.01" step="0.01" required></td>
+        <td><button type="button" class="btn btn-danger" onclick="removeItemRow(this)">Remove</button></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary" onclick="addItemRow()">Add Item</button>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-success mt-3">Submit Invoice</button>
+  </form>
+</div>
+</body>
+</html>

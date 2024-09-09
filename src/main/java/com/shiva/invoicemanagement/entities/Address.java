@@ -7,13 +7,12 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @ToString(exclude = "id")
 @Getter
-
+@Setter
 public class Address {
 
     @Id

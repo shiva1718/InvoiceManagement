@@ -17,7 +17,7 @@ public class Payment {
     private Long id;
     private Date date;
     private double amountPaid;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
     private PaymentType paymentType;
