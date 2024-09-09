@@ -66,6 +66,6 @@ public class ThymeLeafController {
 
     @GetMapping("/invoices/{id}")
     public String viewInvoice(Model model) {
-        return "viewinvoice2";
+        return "viewinvoice";
     }
 }
