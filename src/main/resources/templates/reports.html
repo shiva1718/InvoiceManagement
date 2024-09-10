@@ -124,34 +124,77 @@
 </div>
 
 <script>
+  function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
   async function fetchReports() {
       try {
-          // Fetch total sales
-          const salesResponse = await fetch('/api/reports/sales', {
-              headers: {
-                  'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-              }
-          });
-          const salesData = await salesResponse.json();
-          populateSalesTable(salesData);
+        // Fetch total sales
+        token = getCookie('token')
+        username = getCookie('username')
+        let JSESSIONID = getCookie('JSESSIONID')
+        if (!token || !username) {
+          window.location.href = '/login'
+        }
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
+        const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+        console.log("sending req");
+        fetch("/api/v1/reports/monthly-sales", requestOptions)
+                .then(response => {
+                  if (response.status === 401) {
+                    alert('Unauthorized. Please log in.');
+                    window.location.href = '/login';  // Redirect to login if unauthorized
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  console.log(data);
+                  let salesData = data;
+                  populateSalesTable(salesData);
+                });
+        // Fetch top customers
+        fetch("/api/v1/reports/top-customers", requestOptions)
+                .then(response => {
+                  if (response.status === 401) {
+                    alert('Unauthorized. Please log in.');
+                    window.location.href = '/login';  // Redirect to login if unauthorized
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  console.log(data);
+                  let customersData = data;
+                  populateCustomersTable(customersData);
+                });
+        // Fetch top selling items
+        fetch("/api/v1/reports/top-items", requestOptions)
+                .then(response => {
+                  if (response.status === 401) {
+                    alert('Unauthorized. Please log in.');
+                    window.location.href = '/login';  // Redirect to login if unauthorized
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  console.log(data);
+                  let itemsData = data;
+                  populateItemsTable(itemsData);
+                });
 
-          // Fetch top customers
-          const customersResponse = await fetch('/api/reports/top-customers', {
-              headers: {
-                  'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-              }
-          });
-          const customersData = await customersResponse.json();
-          populateCustomersTable(customersData);
-
-          // Fetch top selling items
-          const itemsResponse = await fetch('/api/reports/top-items', {
-              headers: {
-                  'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-              }
-          });
-          const itemsData = await itemsResponse.json();
-          populateItemsTable(itemsData);
 
       } catch (error) {
           document.getElementById('message').textContent = 'Error loading reports: ' + error.message;
@@ -167,7 +210,7 @@
           const row = document.createElement('tr');
           row.innerHTML = `
               <td>${sale.month}</td>
-              <td>${sale.totalSales}</td>
+              <td>${sale.sales}</td>
           `;
           salesTableBody.appendChild(row);
       });
@@ -197,7 +240,7 @@
           const row = document.createElement('tr');
           row.innerHTML = `
               <td>${item.name}</td>
-              <td>${item.totalSold}</td>
+              <td>${item.sales}</td>
           `;
           itemsTableBody.appendChild(row);
       });

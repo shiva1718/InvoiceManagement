@@ -10,7 +10,7 @@ public class InvoiceItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String itemName;
+    private String name;
     private double price;
     private int quantity;
     private double totalAmount;
@@ -24,7 +24,7 @@ public class InvoiceItem {
     }
 
     public InvoiceItem(InvoiceItemDTO item, Invoice invoice) {
-        this.itemName = item.getName();
+        this.name = item.getName();
         this.price = item.getPrice();
         this.quantity = item.getQuantity();
         this.totalAmount = price * quantity;

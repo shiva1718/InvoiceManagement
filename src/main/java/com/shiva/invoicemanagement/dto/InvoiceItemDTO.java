@@ -15,7 +15,7 @@ public class InvoiceItemDTO {
 
     public InvoiceItemDTO(InvoiceItem item) {
         this.id = item.getId();
-        this.name = item.getItemName();
+        this.name = item.getName();
         this.price = item.getPrice();
         this.quantity = item.getQuantity();
         this.totalAmount = item.getTotalAmount();
