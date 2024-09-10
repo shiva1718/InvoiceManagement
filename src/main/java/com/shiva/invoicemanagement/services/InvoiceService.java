@@ -76,6 +76,7 @@ public class InvoiceService {
         if (invoice.isEmpty()) {
             throw new InvoiceNotFoundException("Invoice not found");
         } else {
+            invoice.get().getCustomer().subtractBalance(invoice.get().getTotalAmount());
             invoiceRepository.deleteById(id);
         }
     }

@@ -58,7 +58,7 @@
         items.push(item);
       });
       const date = document.getElementById('invoiceDate').value;
-      const customerId = document.getElementById('customerId').value;
+      const customerId = document.getElementById('customerId').value.split('[')[0];
       const myHeaders = new Headers();
       myHeaders.append("Authorization", "Bearer " + token);
       myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);

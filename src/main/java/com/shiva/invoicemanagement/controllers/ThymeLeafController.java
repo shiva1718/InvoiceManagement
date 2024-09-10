@@ -71,4 +71,10 @@ public class ThymeLeafController {
         System.out.println("Invoice id = " + id);
         return "viewinvoice";
     }
+
+    @GetMapping("/reports")
+    public String reports(Model model) {
+        return "reports";
+    }
+
 }
