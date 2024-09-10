@@ -85,7 +85,7 @@
                 if (data.status === 'success') {
                   window.location.href = '/invoices';
                 } else {
-                  alert(data.message);
+                  alert("Submitted successfully!");
                 }
               })
               .catch(error => console.log('error', error));
@@ -129,7 +129,8 @@
                   // Populate datalist with customer options
                   customers.forEach(customer => {
                     const option = document.createElement('option');
-                    option.value = customer.id;  // You can show customer ID or name
+                    // option.label = customer.name;
+                    option.value = customer.id + `[${customer.name}]`;  // You can show customer ID or name
                     option.textContent = `${customer.name} (${customer.email})`;  // Display customer name and email in the dropdown
                     customerList.appendChild(option);
                   });
@@ -157,7 +158,7 @@
     <!-- Customer Information -->
     <div class="mb-3">
       <label for="customerId" class="form-label">Customer ID</label>
-      <input type="text" class="form-control" list="customerList" id="customerId" name="customerId" placeholder="Start typing to search for customer..." autocomplete="on" required>
+      <input type="text" class="form-control" list="customerList" id="customerId" name="customerId" placeholder="Start typing to search for customer..." autocomplete="off" required>
       <datalist id="customerList">
         <!-- Customer options will be dynamically added here -->
       </datalist>
