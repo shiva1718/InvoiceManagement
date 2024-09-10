@@ -2,6 +2,7 @@ package com.shiva.invoicemanagement.services;
 
 import com.shiva.invoicemanagement.dto.InvoiceDTO;
 import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
+import com.shiva.invoicemanagement.entities.Customer;
 import com.shiva.invoicemanagement.entities.InvoiceItem;
 import com.shiva.invoicemanagement.repo.CustomerRepository;
 import com.shiva.invoicemanagement.repo.InvoiceRepository;
@@ -28,10 +29,12 @@ public class InvoiceService {
 
     public InvoiceDTO addInvoice(InvoiceDTO invoice) {
         Long customerId = invoice.getCustomerId();
-        if (customerRepository.findById(customerId).isEmpty()) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        if (optionalCustomer.isEmpty()) {
             throw new CustomerNotFoundException("Customer not found");
         }
-        Invoice newInvoice = new Invoice(invoice, customerRepository.findById(customerId).get());
+        Customer customer = optionalCustomer.get();
+        Invoice newInvoice = new Invoice(invoice, customer);
         List<InvoiceItemDTO> items = invoice.getItems();
         items.forEach(item -> {
             newInvoice.addItem(new InvoiceItem(item, newInvoice));
@@ -39,9 +42,10 @@ public class InvoiceService {
 //        newInvoice.setDate(Date.valueOf(invoice.getDate()));
 //        newInvoice.setTotalAmount(invoice.getTotalAmount());
 //        newInvoice.setCustomer(customerRepository.findById(customerId).get());
-        invoiceRepository.save(newInvoice);
         invoice.setId(newInvoice.getId());
         invoice.setTotalAmount(newInvoice.getTotalAmount());
+        customer.addBalance(invoice.getTotalAmount());
+        invoiceRepository.save(newInvoice);
         return invoice;
     }
 

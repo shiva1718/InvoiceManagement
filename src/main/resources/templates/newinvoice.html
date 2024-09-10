@@ -5,12 +5,15 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script>
+    let token = '';
+    let username = '';
+
     // Function to dynamically add more invoice items
     function addItemRow() {
-        const itemsTable = document.getElementById("itemsTable");
-        const newRow = itemsTable.insertRow(-1);
+      const itemsTable = document.getElementById("itemsTable");
+      const newRow = itemsTable.insertRow(-1);
 
-        newRow.innerHTML = `
+      newRow.innerHTML = `
             <td><input type="text" class="form-control" name="itemName" placeholder="Item Name" required></td>
             <td><input type="number" class="form-control" name="quantity" placeholder="Quantity" min="1" required></td>
             <td><input type="number" class="form-control" name="price" placeholder="Price" min="0.01" step="0.01" required></td>
@@ -18,33 +21,157 @@
         `;
     }
 
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
     // Function to remove invoice item row
     function removeItemRow(button) {
-        const row = button.parentElement.parentElement;
-        row.parentElement.removeChild(row);
+      const row = button.parentElement.parentElement;
+      row.parentElement.removeChild(row);
     }
+
+    function submitInvoice() {
+      // const form = document.querySelector('form');
+      // const formData = new FormData(form);
+      token = getCookie('token')
+      username = getCookie('username')
+      let JSESSIONID = getCookie('JSESSIONID')
+      if (!token || !username) {
+        window.location.href = '/login'
+      }
+      const items = [];
+      const itemRows = document.querySelectorAll('#itemsTable tbody tr');
+      itemRows.forEach(row => {
+        const item = {
+          name: row.querySelector('input[name="itemName"]').value,
+          quantity: row.querySelector('input[name="quantity"]').value,
+          price: row.querySelector('input[name="price"]').value
+        };
+        items.push(item);
+      });
+      const date = document.getElementById('invoiceDate').value;
+      const customerId = document.getElementById('customerId').value;
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + token);
+      myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
+      myHeaders.append("Content-Type", "application/json");
+      const invoice = {
+        customerId: customerId,
+        date: date,
+        items: items
+      };
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+        body: JSON.stringify(invoice)
+      };
+      fetch("http://localhost:8080/api/v1/invoices", requestOptions)
+              .then(response => {
+                if (response.status === 401) {
+                  window.location.href = '/login'
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (data.status === 'success') {
+                  window.location.href = '/invoices';
+                } else {
+                  alert(data.message);
+                }
+              })
+              .catch(error => console.log('error', error));
+
+    }
+
+    // Fetch customer data from the server and populate the datalist
+    async function fetchCustomers() {
+      token = getCookie('token')
+      username = getCookie('username')
+
+      try {
+        // Send a request to fetch customer data from server
+        let JSESSIONID = getCookie('JSESSIONID')
+        if (!token || !username) {
+          window.location.href = '/login'
+        }
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Cookie", `JSESSIONID=${JSESSIONID}`);
+        const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+        console.log("sending req");
+        fetch("http://localhost:8080/api/v1/customers", requestOptions)
+                .then(response => {
+                  if (response.status === 401) {
+                    alert('Unauthorized. Please log in.');
+                    window.location.href = '/login';  // Redirect to login if unauthorized
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  console.log(data);
+                  let customers = data;
+                  // Clear existing options
+                  const customerList = document.getElementById('customerList');
+                  customerList.innerHTML = '';
+                  // Populate datalist with customer options
+                  customers.forEach(customer => {
+                    const option = document.createElement('option');
+                    option.value = customer.id;  // You can show customer ID or name
+                    option.textContent = `${customer.name} (${customer.email})`;  // Display customer name and email in the dropdown
+                    customerList.appendChild(option);
+                  });
+                  // loadingMessage.style.display = 'none';
+                }).catch(error => {
+          console.error('Error:', error);
+          // loadingMessage.style.display = 'none';
+          // errorMessage.style.display = 'block';
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        // loadingMessage.style.display = 'none';    // Hide loading message
+        // errorMessage.style.display = 'block';     // Show error message
+      }
+    }
+    window.onload = fetchCustomers;
   </script>
 </head>
 <body>
 <div class="container mt-5">
   <h2>Create New Invoice</h2>
 
-  <form action="#" th:action="@{/invoices}" method="post">
+  <!--  <form action="#" th:action="@{/invoices}" method="post">-->
+  <div>
     <!-- Customer Information -->
     <div class="mb-3">
-      <label for="customerName" class="form-label">Customer ID</label>
-      <input type="text" class="form-control" id="customerName" name="customerName" th:value="${customerName}" required>
+      <label for="customerId" class="form-label">Customer ID</label>
+      <input type="text" class="form-control" list="customerList" id="customerId" name="customerId" placeholder="Start typing to search for customer..." autocomplete="on" required>
+      <datalist id="customerList">
+        <!-- Customer options will be dynamically added here -->
+      </datalist>
     </div>
 
-<!--    <div class="mb-3">-->
-<!--      <label for="customerEmail" class="form-label">Customer Email</label>-->
-<!--      <input type="email" class="form-control" id="customerEmail" name="customerEmail" th:value="${customerEmail}" required>-->
-<!--    </div>-->
+    <!--    <div class="mb-3">-->
+    <!--      <label for="customerEmail" class="form-label">Customer Email</label>-->
+    <!--      <input type="email" class="form-control" id="customerEmail" name="customerEmail" th:value="${customerEmail}" required>-->
+    <!--    </div> for the new invoices pages, in the customer ID field allow autocompletion of customer information by fetching customers from server-->
 
     <!-- Invoice Date -->
     <div class="mb-3">
       <label for="invoiceDate" class="form-label">Invoice Date</label>
-      <input type="date" class="form-control" id="invoiceDate" name="invoiceDate" th:value="${invoiceDate}" required>
+      <input type="date" class="form-control" id="invoiceDate" name="date" th:value="${invoiceDate}" required>
     </div>
 
     <!-- Invoice Items Table -->
@@ -71,8 +198,9 @@
     <button type="button" class="btn btn-primary" onclick="addItemRow()">Add Item</button>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-success mt-3">Submit Invoice</button>
-  </form>
+    <button type="submit" class="btn btn-success mt-3" onclick="submitInvoice();">Submit Invoice</button>
+  </div>
+  <!--  </form>-->
 </div>
 </body>
 </html>
