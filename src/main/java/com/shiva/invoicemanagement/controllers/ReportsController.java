@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Month;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,20 +20,20 @@ public class ReportsController {
 
     @GetMapping("/monthly-sales")
     public ResponseEntity<?> monthlySalesReport() {
-        Map<String, String>[] monthlySales = reportService.monthlySalesReport();
+        List<Map<String, String>> monthlySales = reportService.monthlySalesReport();
 //        System.out.println("monthlySales = " + monthlySales);
         return ResponseEntity.ok(monthlySales);
     }
 
     @GetMapping("/top-customers")
     public ResponseEntity<?> topCustomersReport() {
-        Map<String, String>[] topCustomers = reportService.topCustomersReport();
+        List<Map<String, String>> topCustomers = reportService.topCustomersReport();
         return ResponseEntity.ok(topCustomers);
     }
 
     @GetMapping("/top-items")
     public ResponseEntity<?> topItemsReport() {
-        Map<String, String>[] topTimes = reportService.topItemsReport();
+        List<Map<String, String>> topTimes = reportService.topItemsReport();
         return ResponseEntity.ok(topTimes);
     }
 }
