@@ -1,12 +1,16 @@
 package com.shiva.invoicemanagement.dto;
 
+import lombok.Getter;
+
 import com.shiva.invoicemanagement.entities.InvoiceItem;
 
+@Getter
 public class InvoiceItemDTO {
     private Long id;
     private String name;
     private double price;
     private int quantity;
+    private double tax;
     private double totalAmount;
     private Long invoiceId;
 
@@ -18,31 +22,8 @@ public class InvoiceItemDTO {
         this.name = item.getName();
         this.price = item.getPrice();
         this.quantity = item.getQuantity();
+        this.tax = item.getTax();
         this.totalAmount = item.getTotalAmount();
         this.invoiceId = item.getInvoice().getId();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public Long getInvoiceId() {
-        return invoiceId;
     }
 }

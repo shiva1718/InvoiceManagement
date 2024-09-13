@@ -77,6 +77,7 @@
         <th>Item Name</th>
         <th>Quantity</th>
         <th>Unit Price</th>
+        <th>Tax (%)</th>
         <th>Total</th>
       </tr>
       </thead>
@@ -155,7 +156,8 @@
                         <td>${item.name}</td>
                         <td>${item.quantity}</td>
                         <td>$${item.price.toFixed(2)}</td>
-                        <td>$${(item.quantity * item.price).toFixed(2)}</td>
+                        <td>${item.tax}</td>
+                        <td>$${(item.totalAmount).toFixed(2)}</td>
                     `;
                   tableBody.appendChild(row);
                 })
@@ -181,13 +183,13 @@
 
   // Fetch and display the invoice when the page loads
   // window.onload = function () {
-    // const invoiceId = getInvoiceIdFromUrl();
-    // if (invoiceId) {
-    // fetchInvoice();
-    // } else {
-    //   document.getElementById('message').textContent = 'Invoice ID not found in URL';
-    //   document.getElementById('message').className = 'error';
-    // }
+  // const invoiceId = getInvoiceIdFromUrl();
+  // if (invoiceId) {
+  // fetchInvoice();
+  // } else {
+  //   document.getElementById('message').textContent = 'Invoice ID not found in URL';
+  //   document.getElementById('message').className = 'error';
+  // }
   // };
 </script>
 
