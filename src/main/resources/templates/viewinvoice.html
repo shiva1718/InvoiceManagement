@@ -65,6 +65,8 @@
   <div class="invoice-details">
     <p><span>Invoice ID:</span> <span id="invoiceId"></span></p>
     <p><span>Customer Name:</span> <span id="customerName"></span></p>
+    <p><span>SubTotal:</span>$<span id="subTotal"></span> </p>
+    <p><span>Tax Amount:</span> $<span id="taxAmount"></span></p>
     <p><span>Total Amount:</span> $<span id="totalAmount"></span></p>
     <p><span>Date:</span> <span id="invoiceDate"></span></p>
   </div>
@@ -78,7 +80,8 @@
         <th>Quantity</th>
         <th>Unit Price</th>
         <th>Tax (%)</th>
-        <th>Total</th>
+        <th>Tax Amount</th>
+        <th>Amount</th>
       </tr>
       </thead>
       <tbody id="itemsTableBody">
@@ -116,6 +119,8 @@
     const messageDiv = document.getElementById('message');
     const invoiceIdSpan = document.getElementById('invoiceId');
     const customerNameSpan = document.getElementById('customerName');
+    const subTotalSpan = document.getElementById('subTotal');
+    const taxAmountSpan = document.getElementById('taxAmount');
     const totalAmountSpan = document.getElementById('totalAmount');
     const invoiceDateSpan = document.getElementById('invoiceDate');
     const tableBody = document.getElementById('itemsTableBody');
@@ -145,6 +150,8 @@
                 console.log(invoice);
                 invoiceIdSpan.textContent = invoice.id;
                 customerNameSpan.textContent = invoice.customerName;
+                subTotalSpan.textContent = invoice.subTotal.toFixed(2);
+                taxAmountSpan.textContent = invoice.taxTotal.toFixed(2);
                 totalAmountSpan.textContent = invoice.totalAmount.toFixed(2);
                 invoiceDateSpan.textContent = new Date(invoice.date).toLocaleDateString();
                 // Populate the items table
@@ -156,7 +163,8 @@
                         <td>${item.name}</td>
                         <td>${item.quantity}</td>
                         <td>$${item.price.toFixed(2)}</td>
-                        <td>${item.tax}</td>
+                        <td>${item.taxPercent}</td>
+                        <td>$${item.taxAmount}</td>
                         <td>$${(item.totalAmount).toFixed(2)}</td>
                     `;
                   tableBody.appendChild(row);

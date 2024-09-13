@@ -10,7 +10,11 @@ public class InvoiceItemDTO {
     private String name;
     private double price;
     private int quantity;
-    private double tax;
+
+    private double taxPercent;
+    private double taxAmount;
+
+    // Total Amount is without tax
     private double totalAmount;
     private Long invoiceId;
 
@@ -22,7 +26,8 @@ public class InvoiceItemDTO {
         this.name = item.getName();
         this.price = item.getPrice();
         this.quantity = item.getQuantity();
-        this.tax = item.getTax();
+        this.taxPercent = item.getTaxPercent();
+        this.taxAmount = item.getTaxAmount();
         this.totalAmount = item.getTotalAmount();
         this.invoiceId = item.getInvoice().getId();
     }

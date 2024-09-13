@@ -14,6 +14,10 @@ public class InvoiceDTO {
 
     private String date;
 
+
+    private double subTotal;
+    private double taxTotal;
+
     @Setter
     private double totalAmount;
 
@@ -32,6 +36,8 @@ public class InvoiceDTO {
     public InvoiceDTO(Invoice invoice) {
         this.id = invoice.getId();
         this.date = invoice.getDate().toString();
+        this.subTotal = invoice.getSubTotal();
+        this.taxTotal = invoice.getTaxTotal();
         this.totalAmount = invoice.getTotalAmount();
         this.customerId = invoice.getCustomer().getId();
         items = new ArrayList<>();

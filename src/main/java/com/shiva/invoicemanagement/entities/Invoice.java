@@ -24,6 +24,9 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date date;
+
+    private double subTotal;
+    private double taxTotal;
     private double totalAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,7 +42,13 @@ public class Invoice {
     public Invoice(InvoiceDTO invoice, Customer customer) {
         this.date = Date.valueOf(invoice.getDate());
         this.customer = customer;
+        this.subTotal = invoice.getSubTotal();
+        this.taxTotal = invoice.getTaxTotal();
+        this.totalAmount = invoice.getTotalAmount();
         items = new ArrayList<>();
+        for(InvoiceItemDTO item: invoice.getItems()) {
+            items.add(new InvoiceItem(item, this));
+        }
         payments = new ArrayList<>();
     }
 
@@ -50,7 +59,7 @@ public class Invoice {
 
     public void addItem(InvoiceItem invoiceItem) {
         items.add(invoiceItem);
-        totalAmount += invoiceItem.getTotalAmount();
+        totalAmount += invoiceItem.getTotalAmount() + invoiceItem.getTaxAmount();
     }
 
     public void makePayment(Payment newPayment) {

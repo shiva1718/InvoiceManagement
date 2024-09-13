@@ -12,8 +12,11 @@ public class InvoiceItem {
     private Long id;
     private String name;
     private double price;
+    private double taxPercent;
+    private double taxAmount;
     private int quantity;
-    private double tax;
+
+    // Total Amount is without tax
     private double totalAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +31,8 @@ public class InvoiceItem {
         this.name = item.getName();
         this.price = item.getPrice();
         this.quantity = item.getQuantity();
-        this.tax = item.getTax();
+        this.taxPercent = item.getTaxPercent();
+        this.taxAmount = item.getTaxAmount();
 //        this.totalAmount = price * quantity;
         this.totalAmount = item.getTotalAmount();
         this.invoice = invoice;

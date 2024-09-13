@@ -35,15 +35,15 @@ public class InvoiceService {
         }
         Customer customer = optionalCustomer.get();
         Invoice newInvoice = new Invoice(invoice, customer);
-        List<InvoiceItemDTO> items = invoice.getItems();
-        items.forEach(item -> {
-            newInvoice.addItem(new InvoiceItem(item, newInvoice));
-        });
+//        List<InvoiceItemDTO> items = invoice.getItems();
+//        items.forEach(item -> {
+//            newInvoice.addItem(new InvoiceItem(item, newInvoice));
+//        });
 //        newInvoice.setDate(Date.valueOf(invoice.getDate()));
 //        newInvoice.setTotalAmount(invoice.getTotalAmount());
 //        newInvoice.setCustomer(customerRepository.findById(customerId).get());
         invoice.setId(newInvoice.getId());
-        invoice.setTotalAmount(newInvoice.getTotalAmount());
+//        invoice.setTotalAmount(newInvoice.getTotalAmount());
         customer.addBalance(invoice.getTotalAmount());
         invoiceRepository.save(newInvoice);
         return invoice;
