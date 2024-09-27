@@ -147,6 +147,11 @@
       return;
     }
 
+    if (!postalCode.match(/^\d{6}$/)) {
+      alert('Invalid postal code!');
+      return;
+    }
+
     // Create a customer object to send in the request
     const customerData = {
       name: name,
