@@ -3,9 +3,11 @@ package com.shiva.invoicemanagement.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.shiva.invoicemanagement.dto.CustomerDTO;
 import com.shiva.invoicemanagement.dto.InvoiceDTO;
 import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,5 +70,20 @@ public class Invoice {
 
     public double getTotalPaid() {
         return payments.stream().mapToDouble(Payment::getAmountPaid).sum();
+    }
+
+    public void updateInvoice(InvoiceDTO updatedInvoice, Customer updatedCustomer) {
+        this.date = Date.valueOf(updatedInvoice.getDate());
+        this.customer = updatedCustomer;
+        this.subTotal = updatedInvoice.getSubTotal();
+        this.taxTotal = updatedInvoice.getTaxTotal();
+        this.totalAmount = updatedInvoice.getTotalAmount();
+        this.items = new ArrayList<>();
+        for(InvoiceItemDTO invItem: updatedInvoice.getItems()) {
+            this.items.add(new InvoiceItem(invItem, this));
+        }
+        updatedCustomer.updateInvoice(this);
+        // update payments later on
+
     }
 }

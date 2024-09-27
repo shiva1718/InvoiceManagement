@@ -51,6 +51,15 @@ public class InvoiceController {
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<?> editInvoiceById(@PathVariable Long id, @RequestBody InvoiceDTO invoice) {
+        try {
+            return ResponseEntity.ok(invoiceService.editInvoiceById(id, invoice));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while editing invoice");
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteInvoiceById(@PathVariable Long id) {
         try {

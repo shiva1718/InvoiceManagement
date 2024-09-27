@@ -118,6 +118,7 @@
                     <td>$${invoice.totalAmount.toFixed(2)}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" onclick="viewInvoice(${invoice.id})">View</button>
+                        <button class="btn btn-warning btn-sm" onclick="editInvoice(${invoice.id})">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteInvoice(${invoice.id})">Delete</button>
                     </td>
                 `;
@@ -130,6 +131,11 @@
   function viewInvoice(invoiceId) {
     // Redirect to the invoice detail page or make a fetch request to get details
     window.location.href = `/invoices/${invoiceId}`;
+  }
+
+  function editInvoice(invoiceId) {
+    // Redirect to the invoice edit page
+    window.location.href = `/invoices/edit/${invoiceId}`;
   }
 
   // Function to delete an invoice

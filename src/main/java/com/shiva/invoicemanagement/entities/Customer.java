@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -70,6 +71,16 @@ public class Customer {
         double totalPaid = invoices.stream().mapToDouble(Invoice::getTotalPaid).sum();
         balance = totalAmount - totalPaid;
         return balance;
+    }
+
+    public void updateInvoice(Invoice invoice) {
+        for(int i = 0; i < invoices.size(); i++) {
+			if(Objects.equals(invoices.get(i).getId(), invoice.getId())) {
+                invoices.set(i, invoice);
+                updateBalance();
+                return;
+			}
+        }
     }
 
 

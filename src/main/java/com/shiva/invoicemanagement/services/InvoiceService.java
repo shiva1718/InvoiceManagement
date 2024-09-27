@@ -5,6 +5,7 @@ import com.shiva.invoicemanagement.dto.InvoiceItemDTO;
 import com.shiva.invoicemanagement.entities.Customer;
 import com.shiva.invoicemanagement.entities.InvoiceItem;
 import com.shiva.invoicemanagement.repo.CustomerRepository;
+import com.shiva.invoicemanagement.repo.InvoiceItemRepository;
 import com.shiva.invoicemanagement.repo.InvoiceRepository;
 import com.shiva.invoicemanagement.entities.Invoice;
 import com.shiva.invoicemanagement.exception.CustomerNotFoundException;
@@ -23,6 +24,9 @@ public class InvoiceService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private InvoiceItemRepository invoiceItemRepository;
 
 //    @Autowired
 //    private InvoiceItemRepository invoiceItemRepository;
@@ -47,6 +51,20 @@ public class InvoiceService {
         customer.addBalance(invoice.getTotalAmount());
         invoiceRepository.save(newInvoice);
         return invoice;
+    }
+
+    public InvoiceDTO editInvoiceById(Long id, InvoiceDTO updatedInvoice) {
+        Optional<Invoice> byId = invoiceRepository.findById(id);
+        if(byId.isEmpty()) {
+            throw new InvoiceNotFoundException("Invoiced ID not found");
+        }
+        Invoice newInvoice = byId.get();
+        for(InvoiceItemDTO invItem: updatedInvoice.getItems()) {
+            invoiceItemRepository.deleteById(invItem.getId());
+        }
+        Customer updatedCustomer = customerRepository.findById(newInvoice.getCustomer().getId()).get();
+        newInvoice.updateInvoice(updatedInvoice, updatedCustomer);
+        return new InvoiceDTO(invoiceRepository.save(newInvoice));
     }
 
     public List<InvoiceDTO> listAllInvoices() {
