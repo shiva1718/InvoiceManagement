@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import com.shiva.invoicemanagement.dto.AddressDTO;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,5 +25,13 @@ public class Address {
     private String city;
     private String state;
     private String pincode;
+
+    public Address(AddressDTO address) {
+        this.id = address.getId();
+        this.street = address.getStreet();
+        this.city = address.getCity();
+        this.state = address.getState();
+        this.pincode = address.getPincode();
+    }
 
 }

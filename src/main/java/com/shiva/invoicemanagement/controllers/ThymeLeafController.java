@@ -77,4 +77,10 @@ public class ThymeLeafController {
         return "reports";
     }
 
+    @GetMapping("/customers/edit/{id}")
+    public String editCustomer(Model model, @PathVariable Long id) {
+        return "editcustomer";
+    }
+
+
 }

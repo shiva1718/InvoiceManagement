@@ -13,7 +13,7 @@ public class CustomerDTO {
     private Long id;
     private String name;
     private String email;
-    private String address;
+    private AddressDTO address;
     private String phone;
     private double balance;
     private List<InvoiceDTO> invoices = new ArrayList<>();
@@ -25,7 +25,7 @@ public class CustomerDTO {
         this.id = customer.getId();
         this.name = customer.getName();
         this.email = customer.getEmail();
-        this.address = customer.getAddress().toString();
+        this.address = new AddressDTO(customer.getAddress());
         this.phone = customer.getPhone();
         this.balance = customer.getBalance();
         customer.getInvoices().forEach(invoice -> invoices.add(new InvoiceDTO(invoice)));

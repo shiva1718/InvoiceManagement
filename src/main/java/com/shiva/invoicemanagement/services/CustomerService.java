@@ -47,7 +47,7 @@ public class CustomerService {
         return new CustomerDTO(customer);
     }
 
-    public CustomerDTO updateCustomer(Long id, Customer customer) {
+    public CustomerDTO updateCustomer(Long id, CustomerDTO customer) {
         Optional<Customer> byId = customerRepository.findById(id);
         if (byId.isEmpty()) {
             return null;

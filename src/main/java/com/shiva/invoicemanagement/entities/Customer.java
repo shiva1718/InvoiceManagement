@@ -41,16 +41,19 @@ public class Customer {
 //        customer.getInvoices().forEach(invoiceDTO -> invoices.add(new Invoice(invoiceDTO, this)));
 //    }
 
-    public void update(Customer customer) {
+    public void update(CustomerDTO customer) {
         // update only fields which are not null
         if (customer.getName() != null) {
             this.name = customer.getName();
+        }
+        if(customer.getPhone() != null) {
+            this.phone = customer.getPhone();
         }
         if (customer.getEmail() != null) {
             this.email = customer.getEmail();
         }
         if (customer.getAddress() != null) {
-            this.address = customer.getAddress();
+            this.address = new Address(customer.getAddress());
         }
     }
 
