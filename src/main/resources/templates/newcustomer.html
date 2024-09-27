@@ -126,9 +126,24 @@
     const messageDiv = document.getElementById('message');
 
     // Validate inputs
-    if (!name || !email || !phone || !street || !city || !state || !postalCode) {
-      messageDiv.textContent = 'Please fill out all fields!';
+    if (!name || !email) {
+      messageDiv.textContent = 'Please fill out email and name fields!';
       messageDiv.className = 'error';
+      return;
+    }
+
+    if (!name.match(/^[a-zA-Z0-9 ]{3,}$/)) {
+      alert('Invalid name!');
+      return;
+    }
+
+    if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+      alert('Invalid email address!');
+      return;
+    }
+
+    if (!phone.match(/^\+?\d{7,15}$/)) {
+      alert('Invalid phone number!');
       return;
     }
 

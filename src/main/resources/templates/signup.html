@@ -71,6 +71,14 @@
             let email = document.getElementById('email').value;
             let password = document.getElementById('password').value;
             let confirmPassword = document.getElementById('confirmPassword').value;
+            if (!username.match(/^[a-zA-Z0-9._-]{3,}$/)) {
+                alert('Invalid username!');
+                return;
+            }
+            if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+                alert('Invalid email address!');
+                return;
+            }
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
@@ -98,31 +106,31 @@
     </script>
 </head>
 <body>
-    <div class="signup-container">
-        <h2>Sign Up</h2>
-<!--        <form th:action="@{/api/auth/register}" method="post">-->
+<div class="signup-container">
+    <h2>Sign Up</h2>
+    <!--        <form th:action="@{/api/auth/register}" method="post">-->
+    <div>
         <div>
-            <div>
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            </div>
-            <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <div>
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-            </div>
-            <div>
-                <button onclick="sendData()">Sign Up</button>
-            </div>
-            <a href="./login" class="login-link">Already have an account? Log in</a>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
         </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+        </div>
+        <div>
+            <button onclick="sendData()">Sign Up</button>
+        </div>
+        <a href="./login" class="login-link">Already have an account? Log in</a>
     </div>
+</div>
 </body>
 </html>
